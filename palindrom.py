@@ -6,8 +6,7 @@ class CuttingPalindromesPython:
     def is_palindrome(self, string: str):
         # Implement this in test scenario 1
         length = len(string)
-        if length%2 == 0:
-
+        for
         return False
 
     def minimum_palindrome_cuts(self, palindrome_string: str) -> int:
