@@ -1,15 +1,10 @@
 import re
 
+
 class CuttingPalindromesPython:
-    # def __init__(self, init_string: str):
-    #     self.init_string = init_string
-    #     self.is_palindrome(self.init_string)
 
-    def is_palindrome(self, string: str):
+    def is_palindrome(self, string):
         # Implement this in test scenario 1
-
-        # print(length)
-        # print(range(length//2))
         if string == string[::-1]:
             return True
         else:
@@ -30,26 +25,15 @@ class CuttingPalindromesPython:
             return len(palindrome_string) - 1 if i == 0 else i
 
     def cut_string(self, string: str) -> (str, str):
-        slice_fwd = [m.start() for m in re.finditer(string[0], string)]
-        slice_bwd = [m.start() for m in re.finditer(string[-1], string[::-1])]
-        print(string)
-        if len(slice_fwd) == 1:
+        slice_at = [m.start() for m in re.finditer(string[0], string)]
+        if len(slice_at) == 1:
             if len(string) == 1:
                 return string, ""
             else:
-                first = string[0]
-                second = string[1:]
+                return string[0], string[1:]
         else:
-            if len(slice_bwd) > 1 and slice_bwd[1] > slice_fwd[1]:
-                string = string[::-1]
-                slice_fwd = slice_bwd
-            first = string[0]
-            second = string[1:]
-            for d in slice_fwd:
-                if self.is_palindrome(string[:d+1]):
-                    first = string[:d + 1]
-                    second = string[d + 1:]
-        print(first, second)
+            first = string[:slice_at[1] + 1]
+            second = string[slice_at[1] + 1:]
         return first, second
 
 
@@ -63,9 +47,5 @@ if __name__ == '__main__':
     print(pal.minimum_palindrome_cuts("radarlevel"))
     print(pal.minimum_palindrome_cuts("radarrefer"))
     print(pal.minimum_palindrome_cuts("levels"))
-    print("wowaphplevel", pal.minimum_palindrome_cuts("wowaphplevel"))
-    print("wowpshplevel", pal.minimum_palindrome_cuts("wowpshplevel"))
-    print("wowakayak", pal.minimum_palindrome_cuts("wowakayak"))
-    print("aabaababa", pal.minimum_palindrome_cuts("aabaababa"))
-    print("xyxyyzyyy", pal.minimum_palindrome_cuts("xyxyyzyyy"))
-    print("abaxabbx", pal.minimum_palindrome_cuts("abaxabbx"))
+    print(pal.minimum_palindrome_cuts("wowaphplevel"))
+    print(pal.minimum_palindrome_cuts("wowpshplevel"))
