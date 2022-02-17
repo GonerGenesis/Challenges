@@ -1,4 +1,5 @@
 import re
+import sys
 
 
 class CuttingPalindromesPython:
@@ -20,58 +21,18 @@ class CuttingPalindromesPython:
         # Implement this in test scenario 2 and 3
         if self.is_palindrome(palindrome_string):
             return 0
-        else:
-            i = 0
-            palindrome_string = [palindrome_string]
-            while len(palindrome_string) != 0:
-                print(palindrome_string)
-                palindroms = []
-                # palindrome_string = palindrome_string.replace(self.cut_string(palindrome_string), "", 1)
-                left = []
-                for string in palindrome_string:
-                    # if len(string) == 1:
-                    #     continue
-                    pal = self.cut_string(string)
-                    string = list(string.partition(pal))
-                    string = list(filter(('').__ne__, string))
-                    string.remove(pal)
-                    left += string
-                    i += 1
-                print(palindrome_string)
-                palindrome_string = left
-                print(palindrome_string)
-            return len(palindrome_string) - 1 if i == 0 else i - 1
+        return self.min_cuts(palindrome_string, 0, len(palindrome_string) -1)
 
-    def cut_string(self, string: str) -> str:
-        # print(string)
-        slice_fwd = [m.start() for m in re.finditer(string[0], string)]
-        slice_bwd = [m.start() for m in re.finditer(string[-1], string[::-1])]
-        letters = {}
-        for letter in string:
-            if letter not in letters.keys():
-                pal = letter
-                occ = [m.start() for m in re.finditer(letter, string)]
-                # print("occ", occ)
-                count = len(occ)
-                if count > 1:
-                    for i in range(count - 1):
-                        # print(range(1, count-1))
-                        for j in range(1, count):
-                            is_pal = string[occ[i]:occ[j] + 1]
-                            # print("check", is_pal)
-                            if self.is_palindrome(is_pal) and len(is_pal) > len(pal):
-                                pal = is_pal
-                # print("pal", pal)
-                letters[letter] = pal
-        long_pal = ""
-        # print("letters", letters)
-        for let, pal in letters.items():
-            # print(let, pal)
-            if len(pal) > len(long_pal):
-                long_pal = pal
-        print("longest pal", long_pal)
-        return long_pal
-
+    def min_cuts(self, string: str, i, j) -> int:
+        if i == j or self.is_palindrome(string[i:j+1]):
+            return 0
+        minimum = len(string)
+        print(string[i:j+1])
+        for k in range(i, j):
+            count = 1 + self.min_cuts(string, i, k) + self.min_cuts(string, k+1, j)
+            if count < minimum:
+                minimum = count
+        return minimum
 
 if __name__ == '__main__':
     pal = CuttingPalindromesPython()
